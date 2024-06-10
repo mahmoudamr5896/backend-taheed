@@ -10,8 +10,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 app.use(cors());
 
-// اتصال بقاعدة البيانات MongoDB
-mongoose.connect('mongodb://localhost:27017/myapp', { });
+// اتصال بقاعدة البيانات MongoDB    mongodb://localhost:27017/myapp
+mongoose.connect('mongodb+srv://mahmoud:123@cluster0.0qd359r.mongodb.net/taheeddb', { });
 
 // تعريف مخطط المستخدم
 const userSchema = new mongoose.Schema({
