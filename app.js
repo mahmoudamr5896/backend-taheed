@@ -37,24 +37,24 @@ app.post('/register', async (req, res) => {
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
     
     // إرسال البريد الإلكتروني مع الكود
-    const transporter = nodemailer.createTransport({
-            host: "sandbox.smtp.mailtrap.io",
-            port: 587, //تأكد من استخدام المنفذ (port) الصحيح، عادة 2525 أو  أو .            ,
-            auth: {
-              user: "9bab2b70059de4",
-              pass: "97547abce58fe0"
-            }
-          });
     // const transporter = nodemailer.createTransport({
-    //     service: 'gmail',
-    //     auth: {
-    //       user: 'mahmoudamr5896@gmail.com',
-    //       pass: 'mahmoudamr2030'
-    //     }
+    //         host: "sandbox.smtp.mailtrap.io",
+    //         port: 587, //تأكد من استخدام المنفذ (port) الصحيح، عادة 2525 أو  أو .            ,
+    //         auth: {
+    //           user: "9bab2b70059de4",
+    //           pass: "97547abce58fe0"
+    //         }
     //       });
+    const transporter = nodemailer.createTransport({
+        service: 'outlook',
+        auth: {
+          user: 'mohmmed.amr.hassan@outlook.com',
+          pass: 'Mahmoudezat2030'
+        }
+          });
     
     const mailOptions = {
-      from: 'mahmoudamr5896@gmail.com',
+      from: 'mohmmed.amr.hassan@outlook.com',
       to: email,
       subject: 'Verification Code',
       text: `Your verification code is: ${verificationCode}`
