@@ -10,6 +10,24 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 app.use(cors());
 
+
+
+const multer = require('multer'); // استيراد مكتبة multer
+const path = require('path');
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve static files from the 'uploads' directory
+
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+
+const upload = multer({ storage: storage });
 // اتصال بقاعدة البيانات MongoDB    mongodb://localhost:27017/myapp
 mongoose.connect('mongodb+srv://mahmoud:123@cluster0.0qd359r.mongodb.net/taheeddb', { });
 
@@ -128,6 +146,38 @@ app.get('/users', async (req, res) => {
   try {
     const users = await User.find();
     res.json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// مسار الحصول على مستخدم بواسطة ID
+app.get('/users/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// مسار حذف مستخدم بواسطة ID
+app.delete('/users/:id', async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    res.status(200).json({ message: 'User deleted successfully.' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
